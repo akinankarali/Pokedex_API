@@ -36,54 +36,119 @@ class _PokemonListState extends State<PokemonList> {
       appBar: AppBar(
         title: Text("Pokedex"),
       ),
-      body: FutureBuilder(
-          future: data,
-          // ignore: missing_return
-          builder: (context, AsyncSnapshot<Pokedex> responsePokemon) {
-            if (responsePokemon.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (responsePokemon.connectionState ==
-                ConnectionState.done) {
-              return GridView.count(
-                crossAxisCount: 2,
-                children: responsePokemon.data.pokemon.map((poke) {
-                  return InkWell(
-                    onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => PokemonDetail(
-                                pokemon: poke,
-                              )));
-                    },
-                    child: Hero(
-                        tag: poke.img,
-                        child: Card(
-                          elevation: 6,
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                width: 100,
-                                height: 100,
-                                child: FadeInImage.assetNetwork(
-                                    placeholder: "assets/loading.gif",
-                                    image: poke.img),
-                              ),
-                              Text(
-                                poke.name,
-                                style: TextStyle(
-                                    fontSize: 22,
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
-                        )),
-                  );
-                }).toList(),
-              );
-            }
-          }),
+      body: OrientationBuilder(
+        builder: (context, orientation) {
+          if (orientation == Orientation.portrait) {
+            return FutureBuilder(
+                future: data,
+                // ignore: missing_return
+                builder: (context, AsyncSnapshot<Pokedex> responsePokemon) {
+                  if (responsePokemon.connectionState ==
+                      ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (responsePokemon.connectionState ==
+                      ConnectionState.done) {
+                    return GridView.count(
+                      crossAxisCount: 2,
+                      children: responsePokemon.data.pokemon.map((poke) {
+                        return InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => PokemonDetail(
+                                      pokemon: poke,
+                                    )));
+                          },
+                          child: Hero(
+                              tag: poke.img,
+                              child: Card(
+                                elevation: 6,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Container(
+                                      width: 200,
+                                      height: 150,
+                                      child: FadeInImage.assetNetwork(
+                                        placeholder: "assets/loading.gif",
+                                        image: poke.img,
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                    Text(
+                                      poke.name,
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              )),
+                        );
+                      }).toList(),
+                    );
+                  }
+                });
+          } else {
+            return FutureBuilder(
+                future: data,
+                // ignore: missing_return
+                builder: (context, AsyncSnapshot<Pokedex> responsePokemon) {
+                  if (responsePokemon.connectionState ==
+                      ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (responsePokemon.connectionState ==
+                      ConnectionState.done) {
+                    return GridView.extent(
+                      maxCrossAxisExtent: 300,
+                      children: responsePokemon.data.pokemon.map((poke) {
+                        return InkWell(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => PokemonDetail(
+                                      pokemon: poke,
+                                    )));
+                          },
+                          child: Hero(
+                              tag: poke.img,
+                              child: Card(
+                                elevation: 6,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Container(
+                                      width: 200,
+                                      height: 150,
+                                      child: FadeInImage.assetNetwork(
+                                        placeholder: "assets/loading.gif",
+                                        image: poke.img,
+                                        fit: BoxFit.contain,
+                                      ),
+                                    ),
+                                    Text(
+                                      poke.name,
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              )),
+                        );
+                      }).toList(),
+                    );
+                  }
+                });
+          }
+        },
+      ),
     );
   }
 }
